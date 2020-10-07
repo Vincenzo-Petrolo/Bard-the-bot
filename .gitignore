@@ -1,0 +1,4 @@
+#Ignoring nodejs packaging
+node_modules/
+package-lock.json
+record.wav

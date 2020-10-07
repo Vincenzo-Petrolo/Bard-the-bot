@@ -4,35 +4,45 @@ const MemoryStream = require('memory-stream');
 const Duplex = require('stream').Duplex;
 const Wav = require('node-wav');
 const fs = require('fs');
-/*
-let songsMap = new Map();
+const fs = require('fs');
 const SONGS_FILE = 'songs.json';
-
-function setup_songs_map() {
-    const SONGS = JSON.parse(fs.readFileSync(SONGS_FILE, 'utf8') );
-    full_songs_map(SONGS);
-}
-
-function full_songs_map(SONGS) {
-    for (let key in SONGS) {
-        songsMap.set(key,SONGS[key]);
-    }
-}
+var SONGS = JSON.parse(fs.readFileSync(SONGS_FILE, 'utf8') );
 
 function add_song(keySong,url){
     validURL(url);
-    //validKEY(key);
+    let id=validKEY(key);
+        if (id ==1) overwrite_key_request();
     add_song_runtime(keySong,url);
-    add_song_json(keySong,url);
 }
 
-function add_song_runtime(keySong,url) {songsMap.set(keySong,url);}
+function add_song_runtime(keySong,url){
+    SONGS[keySong] = url;
+    fs.writeFile("songs.json", JSON.stringify(SONGS), err => { 
+        if (err) throw err;  
+        console.log("Done writing"); // Success 
+    });
+}
 
-function add_song_json(keySong,url){
+
+function create_new_row_json(keySong,url){
     SONGS[keySong]=url;
 }
+/**
+ * 
+ * @param {*} key 
+ * @returns 1 on key duplicated, 0 on unique key
+ */
+function validKEY(key){
+    let dupkey = 0;
+    for(songKey of SONGS){
+        if (dupkey = (key == songKey))break;
+    }
+    return dupkey;
+}
 
-setup_songs_map();add_song("pippo","https://www.youtube.com/watch?v=zAml4Y46ToQ");
+function overwrite_key_request(){}      //TODO
+
+//add_song_runtime("pippo","https://www.youtube.com/watch?v=zAml4Y46ToQ");
 
 function validURL(str) {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -42,8 +52,8 @@ function validURL(str) {
       '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
-  }
-*/
+}
+
 // Deepspeech
 
 const LM_ALPHA = 0;

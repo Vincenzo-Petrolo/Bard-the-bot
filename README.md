@@ -28,6 +28,11 @@ Run the installer, which will install the italian models :
 
 ``` ./installer.sh ```
 
+## Configuration
+In order to run the discord Bot, edit the ```tokens.json``` file and fill it
+with your discord bot token. The ```dungeon_master``` entry is the username of 
+the one whom will be listened from the bot.
+
 ## Running
 ``` npm run ```
 

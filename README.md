@@ -41,3 +41,6 @@ Here's a list of things that needs to be developed :
 + Multi-language support (Only italian now);
 + Add/Remove keys/urls association at runtime;
 + Write a Dockerfile in order to deploy the project much easier;
++ Discord bot class;
++ Improving Interface.js;
++ Main.js class;

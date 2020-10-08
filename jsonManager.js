@@ -8,12 +8,14 @@ class JSONManager {
      * @param {*} tokensFile filename
      * @param {*} songsFile  filename
      */
-    constructor(tokensFile,songsFile) {
+    constructor(tokensFile,songsFile,printsFile) {
         this.tokensFile = tokensFile;
         this.songsFile  = songsFile;
+        this.printsFile = printsFile;
 
         this.songs      = JSON.parse(fs.readFileSync(this.songsFile,'utf-8'));
         this.tokens     = JSON.parse(fs.readFileSync(this.tokensFile,'utf-8'));
+        this.prints     = JSON.parse(fs.readFileSync(this.printsFile,'utf-8'));
     }
 
     /**
@@ -31,6 +33,13 @@ class JSONManager {
     }
 
     /**
+     * @returns the filename of the prints
+     */
+    get printsFile() {
+        return this.printsFile;
+    }
+
+    /**
      * @returns the JSON struct of songs : urls
      */
     get songs() {
@@ -42,6 +51,13 @@ class JSONManager {
      */
     get tokens() {
         return this.tokens;
+    }
+
+    /**
+     * @returns the prints JSON structure
+     */
+    get prints() {
+        return this.prints;
     }
 
     /**

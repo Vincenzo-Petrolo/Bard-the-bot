@@ -1,15 +1,16 @@
-class Audio {
+import SoxCommand from 'sox-audio'
+import * as fs from 'fs'
+export class Converter {
     
     convert_video2audio(infile,outfile,cb) {
         //TODO
     }
 
-    convert_audio(infile, outfile, cb) {
+    static convert_audio(infile, outfile, cb) {
         try {
-            let SoxCommand = require('sox-audio');
             let command = SoxCommand();
-            streamin = fs.createReadStream(infile);
-            streamout = fs.createWriteStream(outfile);
+            var streamin = fs.createReadStream(infile);
+            var streamout = fs.createWriteStream(outfile);
             command.input(streamin)
                 .inputSampleRate(48000)
                 .inputEncoding('signed')
@@ -36,7 +37,7 @@ class Audio {
     
             command.run();
         } catch (e) {
-            console.log('convert_audio: ' + e)
+            console.log('convert_audio: ' + e);
         }
     }
 }

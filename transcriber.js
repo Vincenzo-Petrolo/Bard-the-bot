@@ -1,14 +1,12 @@
-const DeepSpeech = require('deepspeech');
-const Sox = require('sox-stream');
-const MemoryStream = require('memory-stream');
-const Duplex = require('stream').Duplex;
-const Wav = require('node-wav');
-const fs = require('fs');
+import * as DeepSpeech from 'deepspeech'
+import Sox from 'sox-stream'
+import MemoryStream from 'memory-stream'
+import * as Duplex from 'stream'
 
 /**
  * Use this class to transcribe audio or video stream
  */
-class Transcriber {
+export class Transcriber {
     constructor (alpha,beta,modelPath,desiredSampleRate,scorerPath) {
         this.alpha      = alpha;
         this.beta       = beta;
@@ -22,40 +20,40 @@ class Transcriber {
     /**
      * @returns alpha value
      */
-    get alpha() {
+    get_alpha() {
         return this.alpha;
     }
 
     /**
      * @returns beta value
      */
-    get beta() {
+    get_beta() {
         return this.beta;
     }
 
     /**
      * @returns the model path used
      */
-    get modelPath() {
+    get_modelPath() {
         return this.modelPath;
     }
 
     /**
      * @returns the sample rate used
      */
-    get sampleRate() {
+    get_sampleRate() {
         return this.sampleRate;
     }
 
     /**
      * @returns the deepspeech model
      */
-    get model() {
+    get_model() {
         return this.model;
     }
     
-    #bufferToStream(buffer) {
-        let stream = new Duplex();
+    bufferToStream(buffer) {
+        let stream = new Duplex.Duplex();
         stream.push(buffer);
         stream.push(null);
         return stream;
@@ -66,45 +64,44 @@ class Transcriber {
      * @param {*} audioFile 
      * @returns a string with the transcribed text
      */
-    transcribe_audio(audioFile) {
-        const buffer = fs.readFileSync(audioFile);
-        const result = Wav.decode(buffer);
-        
-        if (result.sampleRate < this.sampleRate) {
-            console.error('Warning: original sample rate (' + result.sampleRate + ') is lower than ' + desiredSampleRate + 'Hz. Up-sampling might produce erratic speech recognition.');
-        }
+    transcribe_audio(audioStream) {
+        console.log("Sto trascrivendo...")
     
-        let audioStream = new MemoryStream();
+        let memStream = new MemoryStream();
 
-        this.bufferToStream(buffer).
-        pipe(Sox({
-                input:  { 
-                    volume: 0.8,
-                },
-                global: {
-                    'no-dither': true,
-                },
-                output: {
-                    bits: 16,
-                    rate: this.sampleRate,
-                    channels: 1,
-                    encoding: 'signed-integer',
-                    endian: 'little',
-                    compression: 0.0,
-                    type: 'raw'
-                }
-            })
-        ).
-        pipe(audioStream);
-        audioStream.on('finish', () => {
-            let audioBuffer = audioStream.toBuffer();
+        audioStream
+        .pipe(Sox(
+            {
+            input:  { 
+                volume: 1,
+                type: 'raw',
+                rate: 48000,
+                encoding: 'signed-integer',
+                bits: 16,
+                channels: 2,
+                endian:"little"
+            },
+            global: {
+                'no-dither': true,
+            },
+            output: {
+                bits: 16,
+                rate: 16000,
+                channels: 1,
+                encoding: 'signed-integer',
+                endian: 'little',
+                compression: 0.0,
+                type: 'raw'
+            }
+        })).pipe(memStream)
+
+        memStream.on('finish', () => {
+            let audioBuffer = memStream.toBuffer();
             
-            const audioLength = (audioBuffer.length / 2) * (1 / desiredSampleRate);
+            const audioLength = (audioBuffer.length / 2) * (1 / this.sampleRate);
             console.log('audio length', audioLength);
             
-            let result = model.stt(audioBuffer);
-            console.log(result);
-            return result;
+            return this.model.stt(audioBuffer);
         });
 
     }

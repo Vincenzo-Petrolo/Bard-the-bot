@@ -1,30 +1,33 @@
 {
-    "name": "bard_the_bot",
-    "version": "1.0.0",
-    "description": "Helper for D&D sessions",
-    "main": "index.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "node index.js"
-    },
-    "author": "Vincenzo Petrolo and Salvatore Rendo",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/Vincenzo-Petrolo/Bard-the-bot"
-    },
-    "bugs": {
-      "url": "https://github.com/Vincenzo-Petrolo/Bard-the-bot"
-    },
-    "homepage": "https://github.com/Vincenzo-Petrolo/Bard-the-bot#readme",
-    "license": "GPLv3",
-    "dependencies": {
-        "@discordjs/opus": "^0.1.0",
-        "discord-player": "file:discord-player",
-        "discord.js": "^12.3.1",
-        "deepspeech": "^0.8.2",
-        "request": "^2.88.2",
-        "sox-audio": "git://github.com/healzer/sox-audio.git",
-        "underscore": "^1.11.0"
-    }
+  "name": "bard_the_bot",
+  "version": "1.0.0",
+  "description": "Helper for D&D sessions",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Vincenzo Petrolo and Salvatore Rendo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vincenzo-Petrolo/Bard-the-bot"
+  },
+  "bugs": {
+    "url": "https://github.com/Vincenzo-Petrolo/Bard-the-bot"
+  },
+  "homepage": "https://github.com/Vincenzo-Petrolo/Bard-the-bot#readme",
+  "license": "GPLv3",
+  "dependencies": {
+    "@discordjs/opus": "^0.1.0",
+    "deepspeech": "^0.8.2",
+    "discord-player": "3.0.0-beta.1",
+    "discord.js": "^12.3.1",
+    "duplex": "^1.0.0",
+    "memory-stream": "^1.0.0",
+    "request": "^2.88.2",
+    "sox-audio": "0.3.0",
+    "sox-stream": "^2.0.6",
+    "underscore": "^1.11.0"
   }
-  
+}

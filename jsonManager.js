@@ -1,6 +1,6 @@
-const fs = require('fs');
+import * as fs from 'fs'
 
-class JSONManager {
+export class JSONManager {
     /**
      *  Create a JSON files manager, which provides a wrapper
      * for writes on files, and manages the JSON objects of the Bot.
@@ -21,42 +21,42 @@ class JSONManager {
     /**
      * @returns the filename of the tokens
      */
-    get tokensFile() {
+    get_tokensFile() {
         return this.tokensFile;
     }
 
     /**
      * @returns the filename of the songs
      */
-    get songsFile() {
+    get_songsFile() {
         return this.songsFile;
     }
 
     /**
      * @returns the filename of the prints
      */
-    get printsFile() {
+    get_printsFile() {
         return this.printsFile;
     }
 
     /**
      * @returns the JSON struct of songs : urls
      */
-    get songs() {
+    get_songs() {
         return this.songs;
     }
 
     /**
      * @returns the JSON struct of token_name : token
      */
-    get tokens() {
+    get_tokens() {
         return this.tokens;
     }
 
     /**
      * @returns the prints JSON structure
      */
-    get prints() {
+    get_prints() {
         return this.prints;
     }
 

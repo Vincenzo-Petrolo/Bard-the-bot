@@ -1,3 +1,4 @@
+import { error } from 'console';
 import * as fs from 'fs'
 
 export class JSONManager {
@@ -69,7 +70,9 @@ export class JSONManager {
      */
     add_song(keyName,url) {
         this.songs[keyName] = url;
-        fs.writeFile(this.songsFile,JSON.stringify(this.songs));
+        fs.writeFile(this.songsFile,JSON.stringify(this.songs),(error) => {
+            if (error) throw error;
+        });
     }
     
     /**
@@ -78,6 +81,8 @@ export class JSONManager {
      */
     remove_song(keyName) {
         delete this.songs[keyName];
-        fs.writeFile(this.songsFile,JSON.stringify(this.songs));
+        fs.writeFile(this.songsFile,JSON.stringify(this.songs),(error) => {
+            if (error) throw error;
+        });
     }
 }

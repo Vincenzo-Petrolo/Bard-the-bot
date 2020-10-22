@@ -9,31 +9,31 @@ Coming soon...
 +    \join ----->
          to join the chat
 
-+    \pause / *stop ----->
++    \pause / *stop -----> (TODO)
         pause the current music
 
-+    \resume ----->
++    \resume -----> (TODO)
         resume the current paused music
 
-+    \remove ----->
++    \remove -----> (TODO)
         remove current sound
 
-+    \addMusic  name [htps:\\.....] ----->
++    \addmusic  name [htps:\\.....] ----->
         add the name and [url] to the songs.json
 
-+    \removeMusic name ----->
++    \removemusic name ----->
         remove the song from songs.json
 
-+   \song name ----->
++   \song name -----> (TODO)
         manual start of a song
 
-+    \audio- ----->
++    \audio- -----> (TODO)
         lower song's audio
 
-+    \audio+ ----->
++    \audio+ -----> (TODO)
         increase song's audio
 
-+    \changeUrl name newUrl ----->
++    \changeUrl name newUrl -----> (TODO)
         change url to a song inside songs.json
 
     

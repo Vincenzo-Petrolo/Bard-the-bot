@@ -17,7 +17,7 @@ export class DiscordBot {
         this._CMD_LEAVE       = this.PREFIX + 'leave';
         this._CMD_DEBUG       = this.PREFIX + 'debug';
         this._CMD_TEST        = this.PREFIX + 'hello';
-        this._CMD_ADDSONG       = this.PREFIX + 'addMusic';
+        this._CMD_ADDSONG     = this.PREFIX + 'addmusic';
         this.guildMap = new Map();
         this.mapKeys = new Map();
         this.lastSong="";
@@ -39,7 +39,10 @@ export class DiscordBot {
             try {
                 if (!('guild' in msg) || !msg.guild) return;
                 const mapKey = msg.guild.id;
-                if (msg.content.trim().toLowerCase() == "\\join") {
+                console.log(this._CMD_ADDSONG)
+                console.log(msg.content.split(" ")[0])
+                console.log((msg.content.toLowerCase().split(" ")[0] == "\\addmusic"))
+                if (msg.content.trim().toLowerCase() == this._CMD_JOIN) {
                     if (!msg.member.voice.channelID) {
                         msg.reply('Error: please join a voice channel first.')
                     } else {
@@ -75,10 +78,13 @@ export class DiscordBot {
                 else if (msg.content.trim().toLowerCase() == this._CMD_TEST) {
                     msg.reply('hello back =)')
                 }
-                //else if (getFirstWord(msg.content[0].trim().toLowerCase())== this._CMD_ADDSONG){
-                             
-                    
-                //}
+                else if (msg.content.toLowerCase().split(" ")[0] == "\\addmusic"){
+                    this.jsonMan.add_song("ciao","pluto")
+                    this.jsonMan.add_song(msg.content.split(" ")[1],msg.content.split(" ")[2]);        
+                }
+                else if (msg.content.toLowerCase().split(" ")[0] == "\\removemusic"){
+                    this.jsonMan.remove_song(msg.content.split(" ")[1]);        
+                }
             } catch (e) {
                 console.log('discordClient message: ' + e)
                 msg.reply('Error#180: Something went wrong, try again or contact the developers if this keeps happening.');
@@ -86,8 +92,8 @@ export class DiscordBot {
         })
     }
     getFirstWord(str) {
-        let spaceIndex = str.indexOf(' ');
-        return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
+        return str.split(" ")[0]
+
     }
 
 

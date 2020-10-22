@@ -2,7 +2,6 @@ import * as DeepSpeech from 'deepspeech'
 import Sox from 'sox-stream'
 import MemoryStream from 'memory-stream'
 import * as Duplex from 'stream'
-
 /**
  * Use this class to transcribe audio or video stream
  */
@@ -64,7 +63,7 @@ export class Transcriber {
      * @param {*} audioFile 
      * @returns a string with the transcribed text
      */
-    transcribe_audio(audioStream) {
+    transcribe_audio(audioStream,discordBot) {
         console.log("Sto trascrivendo...")
     
         let memStream = new MemoryStream();
@@ -101,7 +100,10 @@ export class Transcriber {
             const audioLength = (audioBuffer.length / 2) * (1 / this.sampleRate);
             console.log('audio length', audioLength);
             
-            return this.model.stt(audioBuffer);
+            let res = this.model.stt(audioBuffer);
+            console.log(res)
+            console.log("Chiamo la process command")
+            discordBot.process_command(res)
         });
 
     }

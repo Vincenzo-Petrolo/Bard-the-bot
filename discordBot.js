@@ -1,15 +1,15 @@
 import * as Readable from 'stream'
 import * as Transcriber from './transcriber.js'
-import * as Converter from './converter.js'
 import * as JSONManager from './jsonManager.js'
 import * as Discord from 'discord.js'
-import * as fs from 'fs'
+import Player from './node_modules/discord-player/src/Player.js'
 
 export class DiscordBot {
     constructor() {
         this.transcriber = new Transcriber.Transcriber(0,0,"./model/output_graph.pbmm",16000,"./model/scorer");
         this.jsonMan     = new JSONManager.JSONManager("tokens.json","songs.json","prints.json");
         this.discord     = new Discord.Client();
+        this.discord.player = new Player(this.discord);
         this.messaggio   = null;
         this.PREFIX           = "\\";
         this._CMD_HELP        = this.PREFIX + 'help';
@@ -17,6 +17,7 @@ export class DiscordBot {
         this._CMD_LEAVE       = this.PREFIX + 'leave';
         this._CMD_DEBUG       = this.PREFIX + 'debug';
         this._CMD_TEST        = this.PREFIX + 'hello';
+        this._CMD_ADDSONG       = this.PREFIX + 'addMusic';
         this.guildMap = new Map();
         this.mapKeys = new Map();
         this.lastSong="";
@@ -38,7 +39,7 @@ export class DiscordBot {
             try {
                 if (!('guild' in msg) || !msg.guild) return;
                 const mapKey = msg.guild.id;
-                if (msg.content.trim().toLowerCase() == "*join") {
+                if (msg.content.trim().toLowerCase() == "\\join") {
                     if (!msg.member.voice.channelID) {
                         msg.reply('Error: please join a voice channel first.')
                     } else {
@@ -74,12 +75,22 @@ export class DiscordBot {
                 else if (msg.content.trim().toLowerCase() == this._CMD_TEST) {
                     msg.reply('hello back =)')
                 }
+                //else if (getFirstWord(msg.content[0].trim().toLowerCase())== this._CMD_ADDSONG){
+                             
+                    
+                //}
             } catch (e) {
                 console.log('discordClient message: ' + e)
                 msg.reply('Error#180: Something went wrong, try again or contact the developers if this keeps happening.');
             }
         })
     }
+    getFirstWord(str) {
+        let spaceIndex = str.indexOf(' ');
+        return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
+    }
+
+
     async connect(msg, mapKey) {
         try {
 
@@ -108,7 +119,7 @@ export class DiscordBot {
                 'currentPlayingQuery': null,
                 'debug': false,
             });
-            this.speak_impl(voice_Connection, mapKey)
+            this.speak_impl(voice_Connection)
             voice_Connection.on('disconnect', async(e) => {
                 if (e) console.log(e);
                 this.guildMap.delete(mapKey);
@@ -121,45 +132,34 @@ export class DiscordBot {
         }
     }
 
-    speak_impl(voice_Connection, mapKey) {
+    speak_impl(voice_Connection) {
         voice_Connection.on('speaking', async (user, speaking) => {
             if (speaking.bitfield == 0 /*|| user.bot*/) {
                 return
             }
                 
-            console.log(`I'm listening to ${user.username}`)
+            console.log(`I'm listening to ${user.username}`);
 
             // this creates a 16-bit signed PCM, stereo 48KHz stream
-            const audioStream = voice_Connection.receiver.createStream(user, { mode: 'pcm' })
-            let result = this.transcriber.transcribe_audio(audioStream)
-            console.log("result: " + result)
-            this.process_command(result);
+            const audioStream = voice_Connection.receiver.createStream(user, { mode: 'pcm' });
+            this.transcriber.transcribe_audio(audioStream,this);
         })
     }
 
     
 
     process_command(txt) {
-        console.log(txt)
-        //if (!this.check_txt_len(txt)) return;                                                // check message esists
-        //let val = guildMap.get(mapKey);val.text_Channel.send(user.username + ': ' + txt);     //DEBUGGING    
-        if (typeof(txt) == 'undefined') return;
-        var arrofwords = txt.split(" ");                                             // array of every word
-        console.log(arrofwords)
-        arrofwords.forEach(element => {
-            console.log(element)
-            if (this.jsonMan.get_songs()[element]) {
-                console.log("riproduco : " + json.get(element))
-                this.discord.play.play(this.messaggio, json.get(element));
+        console.log("Processamento del testo...")
+        var arrofwords = txt.split(" ");  
+        var trovato = false;
+        arrofwords.reverse().forEach(element => {
+            console.log(element + "in JSON : " + (element in this.jsonMan.get_songs()))
+            if (element in this.jsonMan.get_songs() && !trovato) {
+                console.log("riproduco l'url per " + element)
+                this.discord.player.play(this.messaggio, this.jsonMan.get_songs()[element]);
+                trovato = true;
             }
-        });
-        /*
-        let element = this.find_last_word(arrofwords);                                    // find last word
-        if (element && this.check_last_elem(element)) {                                  //checking element not already used
-            this.discord.player.play(this.messaggio, json.get(element));         //start music
-            this.mem_last_song(element);
-        }
-        */
+        });                                           // array of every word
     }
 
     check_txt_len(txt) {

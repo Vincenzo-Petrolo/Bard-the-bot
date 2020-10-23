@@ -26,6 +26,7 @@ Ensure you have nodejs installed, alongside with npm. You need to install on you
 + ffmpeg
 + wget
 + npm
++ make
 
 ## Installing
 Clone the directory with : 

@@ -18,7 +18,7 @@
   "homepage": "https://github.com/Vincenzo-Petrolo/Bard-the-bot#readme",
   "license": "GPLv3",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
+    "@discordjs/opus": "^0.1.0",
     "deepspeech": "^0.8.2",
     "discord-player": "3.0.0-beta.1",
     "discord.js": "^12.3.1",

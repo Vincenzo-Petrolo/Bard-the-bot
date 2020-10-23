@@ -24,6 +24,8 @@ Coming soon...
 Ensure you have nodejs installed, alongside with npm. You need to install on your system:
 + Sox
 + ffmpeg
++ wget
++ npm
 
 ## Installing
 Clone the directory with : 

@@ -143,7 +143,7 @@ export class DiscordBot {
             if (speaking.bitfield == 0 /*|| user.bot*/) {
                 return
             }
-                
+            if (user.username != this.jsonMan.get_tokens["dungeon_master"]) return;
             console.log(`I'm listening to ${user.username}`);
 
             // this creates a 16-bit signed PCM, stereo 48KHz stream

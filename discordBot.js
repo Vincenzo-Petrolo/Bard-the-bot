@@ -17,7 +17,14 @@ export class DiscordBot {
         this._CMD_LEAVE       = this.PREFIX + 'leave';
         this._CMD_DEBUG       = this.PREFIX + 'debug';
         this._CMD_TEST        = this.PREFIX + 'hello';
-        this._CMD_ADDSONG     = this.PREFIX + 'addmusic';
+        this._CMD_ADDSONG     = this.PREFIX + 'addsong';
+        this._CMD_RMSONG      = this.PREFIX + 'rmsong';
+        this._CMD_STOP        = this.PREFIX + 'stop';
+        this._CMD_PAUSE       = this.PREFIX + 'pause';
+        this._CMD_RESUME      = this.PREFIX + 'resume';
+        this._CMD_PLAY        = this.PREFIX + 'play';
+        this._CMD_VOLUME      = this.PREFIX + 'volume';
+        this._CMD_CHANGEURL   = this.PREFIX + 'churl';
         this.guildMap = new Map();
         this.mapKeys = new Map();
         this.lastSong="";
@@ -39,9 +46,7 @@ export class DiscordBot {
             try {
                 if (!('guild' in msg) || !msg.guild) return;
                 const mapKey = msg.guild.id;
-                console.log(this._CMD_ADDSONG)
-                console.log(msg.content.split(" ")[0])
-                console.log((msg.content.toLowerCase().split(" ")[0] == "\\addmusic"))
+
                 if (msg.content.trim().toLowerCase() == this._CMD_JOIN) {
                     if (!msg.member.voice.channelID) {
                         msg.reply('Error: please join a voice channel first.')
@@ -78,12 +83,19 @@ export class DiscordBot {
                 else if (msg.content.trim().toLowerCase() == this._CMD_TEST) {
                     msg.reply('hello back =)')
                 }
-                else if (msg.content.toLowerCase().split(" ")[0] == "\\addmusic"){
-                    this.jsonMan.add_song("ciao","pluto")
-                    this.jsonMan.add_song(msg.content.split(" ")[1],msg.content.split(" ")[2]);        
+                else if (msg.content.toLowerCase().split(" ")[0] == this._CMD_ADDSONG){
+                    this.jsonMan.add_song(msg.content.split(" ")[1],msg.content.split(" ")[2]);  
+                    msg.reply("Done!")      
                 }
-                else if (msg.content.toLowerCase().split(" ")[0] == "\\removemusic"){
-                    this.jsonMan.remove_song(msg.content.split(" ")[1]);        
+                else if (msg.content.toLowerCase().split(" ")[0] == this._CMD_RMSONG){
+                    this.jsonMan.remove_song(msg.content.split(" ")[1]);
+                    msg.reply("Done!")     
+                }
+                else if (msg.content.toLowerCase().split(" ")[0] == this._CMD_CHANGEURL) {
+                    var arr = msg.content.split(" ");
+                    this.jsonMan.remove_song(arr[1])
+                    this.jsonMan.add_song(arr[1],arr[2])
+                    msg.reply("Done!")
                 }
             } catch (e) {
                 console.log('discordClient message: ' + e)
@@ -143,7 +155,7 @@ export class DiscordBot {
             if (speaking.bitfield == 0 /*|| user.bot*/) {
                 return
             }
-            if (user.username != this.jsonMan.get_tokens["dungeon_master"]) return;
+            if (user.username != this.jsonMan.get_tokens()["dungeon_master"]) return;
             console.log(`I'm listening to ${user.username}`);
 
             // this creates a 16-bit signed PCM, stereo 48KHz stream
@@ -155,13 +167,10 @@ export class DiscordBot {
     
 
     process_command(txt) {
-        console.log("Processamento del testo...")
         var arrofwords = txt.split(" ");  
         var trovato = false;
         arrofwords.reverse().forEach(element => {
-            console.log(element + "in JSON : " + (element in this.jsonMan.get_songs()))
             if (element in this.jsonMan.get_songs() && !trovato) {
-                console.log("riproduco l'url per " + element)
                 this.discord.player.play(this.messaggio, this.jsonMan.get_songs()[element]);
                 trovato = true;
             }

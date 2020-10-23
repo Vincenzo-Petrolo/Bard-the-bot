@@ -9,37 +9,16 @@ Coming soon...
 +    \join ----->
          to join the chat
 
-+    \pause / *stop -----> (TODO)
-        pause the current music
-
-+    \resume -----> (TODO)
-        resume the current paused music
-
-+    \remove -----> (TODO)
-        remove current sound
-
-+    \addmusic  name [htps:\\.....] ----->
++    \addsong  name [htps:\\.....] ----->
         add the name and [url] to the songs.json
 
-+    \removemusic name ----->
++    \rmsong name ----->
         remove the song from songs.json
 
-+   \song name -----> (TODO)
-        manual start of a song
-
-+    \audio- -----> (TODO)
-        lower song's audio
-
-+    \audio+ -----> (TODO)
-        increase song's audio
-
-+    \changeUrl name newUrl -----> (TODO)
++    \churl name newUrl -----> (TODO)
         change url to a song inside songs.json
 
-    
 
-## Docker Container
-Coming soon...
 
 ## Dependencies
 Ensure you have nodejs installed, alongside with npm. You need to install on your system:
@@ -68,13 +47,9 @@ with your discord bot token. The ```dungeon_master``` entry is the username of
 the one whom will be listened from the bot.
 
 ## Running
-``` npm run ```
+``` npm start ```
 
 ## TODO
 Here's a list of things that needs to be developed :
 + Multi-language support (Only italian now);
-+ Add/Remove keys/urls association at runtime;
 + Write a Dockerfile in order to deploy the project much easier;
-+ Discord bot class;
-+ Improving Interface.js;
-+ Main.js class;

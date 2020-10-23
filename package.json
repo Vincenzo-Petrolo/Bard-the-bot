@@ -2,7 +2,7 @@
   "name": "bard_the_bot",
   "version": "1.0.0",
   "description": "Helper for D&D sessions",
-  "main": "index.js",
+  "main": "main.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

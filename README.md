@@ -2,7 +2,7 @@
 Bot helper for discord. It helps dungeon master to change the soundtrack during its narration. How does it works? It catches keywords in your sentences and plays a soundtrack. The soundtrack are customizable as well as the features.
 
 ## Video demonstration
-Coming soon...
+Coming soon....
 
 ## Commands
 
